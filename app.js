@@ -64,10 +64,13 @@ var drawBubbles = function () {
         if(bubble.currentY !== bubble.endingY) {
             context.beginPath();
             context.arc(bubble.currentX, bubble.currentY, bubble.radius, 0, 2 * Math.PI, false);
-            context.fillStyle = "#3366FF";
+            context.fillStyle = "#8ED6FF";
+            context.fill();
+            context.lineWidth = 0.5;
+            context.strokeStyle = '#0066FF';
             context.stroke();
 
-            bubble.currentY -= 0.5;
+            bubble.currentY -= 1;
         } else {
             bubbles.splice(i, 1);
         }
