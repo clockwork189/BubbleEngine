@@ -92,7 +92,7 @@ var generateBubbles = function () {
 var drawBubbles = function () {
     for(var i = 0; i < bubbles.length; i++) {
         var bubble = bubbles[i];
-        if(bubble.currentY !== bubble.endingY) {
+        if(bubble.currentY > 0) {
             context.drawImage(images.bubble1, bubble.currentX, bubble.currentY, bubble.dimensions, bubble.dimensions);
             bubble.currentY -= bubble.speed;
         } else {
@@ -106,6 +106,7 @@ var loop = function () {
     drawBackground();
     generateBubbles();
     drawBubbles();
+    console.log(bubbles.length);
     requestAnimationFrame(loop);
 };
 loop();
