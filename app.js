@@ -49,6 +49,7 @@ var Bubble = function (startX, endX, endY, dimensions) {
     this.endingX = endX;
     this.endingY = endY;
     this.dimensions = dimensions;
+    this.speed = random(1, 3);
     this.isPopped = false;
 };
 
@@ -75,12 +76,16 @@ var generateBubbles = function () {
     if(frameCount - game.lastGeneratedBubble < 100) {
         return;
     }
-    var startX = random(0, stageWidth);
-    var endX = startX;
-    var endY = random(0, stageHeight);
-    var dimensions = random(2, 50);
-    var bubble = new Bubble(startX, endX, endY, dimensions);
-    bubbles.push(bubble);
+    var numBubbles = random(1, 5);
+
+    for(var i = 0; i < numBubbles; i += 1) {
+        var startX = random(0, stageWidth);
+        var endX = startX;
+        var endY = random(0, stageHeight);
+        var dimensions = random(2, 50);
+        var bubble = new Bubble(startX, endX, endY, dimensions);
+        bubbles.push(bubble);
+    }
     game.lastGeneratedBubble = frameCount;
 };
 
@@ -89,7 +94,7 @@ var drawBubbles = function () {
         var bubble = bubbles[i];
         if(bubble.currentY !== bubble.endingY) {
             context.drawImage(images.bubble1, bubble.currentX, bubble.currentY, bubble.dimensions, bubble.dimensions);
-            bubble.currentY -= 1;
+            bubble.currentY -= bubble.speed;
         } else {
             bubbles.splice(i, 1);
         }
@@ -99,7 +104,6 @@ var drawBubbles = function () {
 var loop = function () {
     frameCount += 1;
     drawBackground();
-    drawFrameCount();
     generateBubbles();
     drawBubbles();
     requestAnimationFrame(loop);
