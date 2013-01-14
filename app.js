@@ -4,8 +4,6 @@ var stageHeight = canvas.height;
 
 // Creating game elements
 var bubbles = [];
-var mouseX = stageWidth / 2;
-var mouseY = 0;
 var frameCount = 0;
 
 var images = {};
@@ -106,7 +104,6 @@ var loop = function () {
     drawBackground();
     generateBubbles();
     drawBubbles();
-    console.log(bubbles.length);
     requestAnimationFrame(loop);
 };
 loop();
