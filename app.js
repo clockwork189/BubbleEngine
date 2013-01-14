@@ -4,11 +4,37 @@ var stageHeight = canvas.height;
 
 // Creating game elements
 var bubbles = [];
-
 var mouseX = stageWidth / 2;
 var mouseY = 0;
-
 var frameCount = 0;
+
+var images = {};
+var ImageSources = {
+    bubble1: "images/bubble1.png"
+};
+
+var loadImages = function (sources) {
+    var loadedImages = 0, numImages = 0, key, i;
+    for (key in sources) {
+        if (sources.hasOwnProperty(key)) {
+            numImages += 1;
+        }
+    }
+    if (numImages > 0) {
+        for (i in sources) {
+            if (sources.hasOwnProperty(i)) {
+                images[i] = new Image();
+                images[i].src = sources[i];
+                loadedImages += 1;
+            }
+        }
+    }
+    if (numImages === loadedImages) {
+        return true;
+    }
+    return false;
+};
+loadImages(ImageSources);
 
 var GameObject = function () {
     this.lastGeneratedObstacle = 0;
@@ -17,12 +43,12 @@ var GameObject = function () {
 
 var game = new GameObject();
 
-var Bubble = function (startX, endX, endY, radius) {
+var Bubble = function (startX, endX, endY, dimensions) {
     this.currentX = startX;
     this.currentY = stageHeight;
     this.endingX = endX;
     this.endingY = endY;
-    this.radius = radius;
+    this.dimensions = dimensions;
     this.isPopped = false;
 };
 
@@ -52,8 +78,8 @@ var generateBubbles = function () {
     var startX = random(0, stageWidth);
     var endX = startX;
     var endY = random(0, stageHeight);
-    var radius = random(2, 10);
-    var bubble = new Bubble(startX, endX, endY, radius);
+    var dimensions = random(2, 50);
+    var bubble = new Bubble(startX, endX, endY, dimensions);
     bubbles.push(bubble);
     game.lastGeneratedBubble = frameCount;
 };
@@ -62,14 +88,7 @@ var drawBubbles = function () {
     for(var i = 0; i < bubbles.length; i++) {
         var bubble = bubbles[i];
         if(bubble.currentY !== bubble.endingY) {
-            context.beginPath();
-            context.arc(bubble.currentX, bubble.currentY, bubble.radius, 0, 2 * Math.PI, false);
-            context.fillStyle = "#8ED6FF";
-            context.fill();
-            context.lineWidth = 0.5;
-            context.strokeStyle = '#0066FF';
-            context.stroke();
-
+            context.drawImage(images.bubble1, bubble.currentX, bubble.currentY, bubble.dimensions, bubble.dimensions);
             bubble.currentY -= 1;
         } else {
             bubbles.splice(i, 1);
